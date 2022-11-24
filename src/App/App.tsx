@@ -1,9 +1,7 @@
-import styled from "styled-components";
-
-const CenterBoxWrapper = styled.h1`
-    color: red;
-`
 
 export function App() {
-    return <CenterBoxWrapper>Hello world!</CenterBoxWrapper>;
+    return <div className="container mx-auto">
+        <h1>CNB Currency Calculator</h1>
+
+    </div>;
 }
