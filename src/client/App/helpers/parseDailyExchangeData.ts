@@ -14,7 +14,7 @@ export type ExchangePair = {
 export type DailyExchangeData = {
     date: Date
     sequence: number
-    pairs: ExchangePair[]
+    pairs: Array<ExchangePair>
 }
 
 export const parseDailyExchangeData: (data: string) => DailyExchangeData = (data) => {
@@ -29,7 +29,7 @@ export const parseDailyExchangeData: (data: string) => DailyExchangeData = (data
         pairs: []
     }
 
-    result.pairs = rows.slice(2).map((row) => {
+    result.pairs = rows.slice(2, -1).map((row) => {
         const [country, currency, amount, code, rate] = row.split('|');
         return {
             country,
@@ -39,5 +39,6 @@ export const parseDailyExchangeData: (data: string) => DailyExchangeData = (data
             rate: parseFloat(rate)
         }
     })
+
     return result;
 }

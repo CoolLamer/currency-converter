@@ -1,9 +1,9 @@
-import { QueryClient, QueryClientProvider, useQuery } from 'react-query'
+import { QueryClient, QueryClientProvider } from 'react-query'
 import {HomePage} from "./pages/HomePage";
 
 const queryClient = new QueryClient()
 
-export function App(){
+export const App = function (){
     return (
         <QueryClientProvider client={queryClient}>
             <HomePage />
