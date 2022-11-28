@@ -1,36 +1,56 @@
 import {ExchangePair} from "../../helpers/parseDailyExchangeData";
-import styled from "styled-components";
+import styled, {css} from "styled-components";
 
 const BoxWrapper = styled.div`
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
   border: 1px solid gray;
-  border-radius: 20px;
-  
-  padding: 1.5em;
-  
+
   cursor: pointer;
-  &:hover{
-    
+  background-color: ${props => props.theme.secondary0};
+  border: 1px solid ${props => props.theme.secondary4};
+  
+  padding: 10px 15px;
+  gap: 5px;
+  
+  transition: 200ms;
+
+  &:hover {
+    background-color: ${props => props.theme.secondary2};
   }
+  
+  ${(props) => {
+      if(props.active){
+          return css`
+            background-color: ${props => props.theme.secondary1};
+          `
+      }
+  }}
+`
+
+const LabelRow = styled.div`
+  display: flex;
+  justify-content: space-between;
 `
 
 type Props = {
     pairData: ExchangePair
+    isActive: boolean
     onSelect: () => void
 }
 
 export function CurrencyPairBox(props: Props){
-    const {pairData} = props;
-    return <BoxWrapper onClick={props.onSelect}>
-        <div className={"flex-1"}>
-            <div className="text-xl font-medium text-black">{pairData.country}</div>
-            <p className="text-slate-500">{pairData.currency}</p>
-        </div>
-        <div className="shrink-0">
+    const {pairData, isActive} = props;
+    return <BoxWrapper onClick={props.onSelect} active={isActive}>
+        <LabelRow>
+            <div>{pairData.country}</div>
+            <div>{pairData.currency}</div>
+
+        </LabelRow>
+        <LabelRow>
             <div>1 {pairData.code}</div>
-            <div>=</div>
             <div>{pairData.rate} CZK</div>
-        </div>
+        </LabelRow>
     </BoxWrapper>
 }

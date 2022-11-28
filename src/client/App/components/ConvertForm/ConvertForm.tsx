@@ -1,16 +1,57 @@
 import styled from "styled-components";
-import {DailyExchangeData, ExchangePair} from "../../helpers/parseDailyExchangeData";
 import React, {useEffect, useState} from "react";
-import { divide, multiply } from "mathjs";
+import {divide, multiply, round} from "mathjs";
+import Button from "../common/Button";
+import {DailyExchangeData, ExchangePair} from "../../api/pairsExchangeData";
 
-const CurrencyInput = styled.input`
-  text-align: right;
-  border: 1px solid black;
-  margin-right: 2px;
+const CurrencyInputWrapper = styled.div`
+  display: flex;
+  justify-content: right;
+  align-items: center;
+  
+  border: 1px solid rgb(221, 221, 221);
+  border-radius: 6px;
+  box-shadow: rgb(0 17 51 / 5%) 0 3px 15px;
+  padding: 0 10px;
+  background: white;
+  
+  input{
+    flex:1;
+    text-align: right;
+    padding: 12px;
+    
+    transition: 200ms;
+
+    // Hide Arrows/Spinners
+    -moz-appearance: textfield;
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+    &:focus{
+      outline: none;
+    }
+  }
 `
 
-const Button = styled.button`
-    
+const ButtonsWrapper = styled.div`
+  display: flex;
+  justify-content: right;
+  gap: 2em;
+`
+
+const ConvertFormWrapper = styled.div`
+  flex: 1;
+  
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  background-color: ${props => props.theme.primary2};
+  padding: 2em;;
+  
+  max-width: 800px;
 `
 
 type Props = {
@@ -25,14 +66,16 @@ export function ConvertForm(props: Props){
     const [ foreignCurrencyValue, setForeignCurrencyValue ] = useState(5);
 
     const convertToForeignValue = () => {
+        const foreignValue = divide(localCurrencyValue, activePair.rate);
         setForeignCurrencyValue(
-            divide(localCurrencyValue, activePair.rate)
+            round(foreignValue, 3)
         )
     };
 
     const convertToLocalValue = () => {
+        const localValue = multiply(foreignCurrencyValue, activePair.rate);
         setLocalCurrencyValue(
-            multiply(foreignCurrencyValue, activePair.rate)
+            round(localValue, 3)
         )
     };
 
@@ -47,14 +90,19 @@ export function ConvertForm(props: Props){
         return <div>Select Currency to convert FROM CZK</div>
     }
 
-    return <div className={"p-4"}>
-        <div>
-            <CurrencyInput value={localCurrencyValue} onChange={(e) => setLocalCurrencyValue(e.target.value)}/> CZK
-            <CurrencyInput value={foreignCurrencyValue} onChange={(e) => setForeignCurrencyValue(e.target.value)}/>{activePair.code}
-        </div>
-        <div>
-            <Button onClick={() => convertToForeignValue()}>Convert</Button>
-            <Button onClick={() => convertToLocalValue()}>Convert Back</Button>
-        </div>
-    </div>
+    return <ConvertFormWrapper>
+        <div>Calculate exchange rate from Czechia crown (CZK) to {activePair.country} {activePair.currency} ({activePair.code})</div>
+        <CurrencyInputWrapper>
+            <input value={localCurrencyValue} type={"number"} onChange={(e) => setLocalCurrencyValue(parseFloat(e.target.value))}/>
+            <span>CZK</span>
+        </CurrencyInputWrapper>
+        <CurrencyInputWrapper>
+            <input value={foreignCurrencyValue} type={"number"} onChange={(e) => setForeignCurrencyValue(parseFloat(e.target.value))}/>
+            <span>{activePair.code}</span>
+        </CurrencyInputWrapper>
+        <ButtonsWrapper>
+            <Button  onClick={() => convertToForeignValue()} content={"Convert"}/>
+            <Button onClick={() => convertToLocalValue()} content={"Convert to local currency"}/>
+        </ButtonsWrapper>
+    </ConvertFormWrapper>
 }
