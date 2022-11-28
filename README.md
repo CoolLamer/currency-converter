@@ -28,3 +28,4 @@ Todos
 - Application is now responsive, but still need some polishing to look better
 - Caching
 - Deployment Script
+- SEO Friendliness
