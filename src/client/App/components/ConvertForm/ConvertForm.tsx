@@ -3,15 +3,17 @@ import React, {useEffect, useState} from "react";
 import {divide, multiply, round} from "mathjs";
 import Button from "../common/Button";
 import {DailyExchangeData, ExchangePair} from "../../api/pairsExchangeData";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faArrowDown, faArrowUp} from "@fortawesome/free-solid-svg-icons";
 
 const CurrencyInputWrapper = styled.div`
+  flex: 1;
   display: flex;
   justify-content: right;
   align-items: center;
   
-  border: 1px solid rgb(221, 221, 221);
-  border-radius: 6px;
-  box-shadow: rgb(0 17 51 / 5%) 0 3px 15px;
+  border: 1px solid ${props => props.theme.primary4};
+  
   padding: 0 10px;
   background: white;
   
@@ -33,12 +35,19 @@ const CurrencyInputWrapper = styled.div`
       outline: none;
     }
   }
+  @media (max-width: 540px) {
+    width: 100%;
+  }
 `
 
-const ButtonsWrapper = styled.div`
+const InputRow = styled.div`
   display: flex;
-  justify-content: right;
-  gap: 2em;
+  gap: 1em;
+
+  @media (max-width: 540px) {
+    flex-direction: column;
+    align-items: end;
+  }
 `
 
 const ConvertFormWrapper = styled.div`
@@ -46,12 +55,19 @@ const ConvertFormWrapper = styled.div`
   
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 1em;
 
   background-color: ${props => props.theme.primary2};
-  padding: 2em;;
+  padding: 2em;
   
   max-width: 800px;
+`
+
+const ConvertButton = styled(Button)`
+  min-width: 150px;
+  @media (max-width: 540px) {
+    width: 100%; 
+  }
 `
 
 type Props = {
@@ -86,23 +102,45 @@ export function ConvertForm(props: Props){
         convertToForeignValue()
     }, [activePair])
 
-    if(activePair == null){
-        return <div>Select Currency to convert FROM CZK</div>
-    }
 
     return <ConvertFormWrapper>
-        <div>Calculate exchange rate from Czechia crown (CZK) to {activePair.country} {activePair.currency} ({activePair.code})</div>
-        <CurrencyInputWrapper>
-            <input value={localCurrencyValue} type={"number"} onChange={(e) => setLocalCurrencyValue(parseFloat(e.target.value))}/>
-            <span>CZK</span>
-        </CurrencyInputWrapper>
-        <CurrencyInputWrapper>
-            <input value={foreignCurrencyValue} type={"number"} onChange={(e) => setForeignCurrencyValue(parseFloat(e.target.value))}/>
-            <span>{activePair.code}</span>
-        </CurrencyInputWrapper>
-        <ButtonsWrapper>
-            <Button  onClick={() => convertToForeignValue()} content={"Convert"}/>
-            <Button onClick={() => convertToLocalValue()} content={"Convert to local currency"}/>
-        </ButtonsWrapper>
+        {activePair == null ? (
+            <div>Select Currency to convert FROM CZK</div>
+        ) : (
+            <>
+                <div>Calculate exchange rate from Czechia crown (CZK) to {activePair.country} {activePair.currency} ({activePair.code})</div>
+                <InputRow>
+                    <CurrencyInputWrapper>
+                        <input value={localCurrencyValue} type={"number"} onChange={(e) => setLocalCurrencyValue(parseFloat(e.target.value))}/>
+                        <span>CZK</span>
+                    </CurrencyInputWrapper>
+                    <ConvertButton
+                        onClick={() => convertToForeignValue()}
+                        content={
+                            <>
+                                <FontAwesomeIcon icon={faArrowDown}/>
+                                Convert
+                            </>
+                        }
+                    />
+                </InputRow>
+                <InputRow>
+                    <CurrencyInputWrapper>
+                        <input value={foreignCurrencyValue} type={"number"} onChange={(e) => setForeignCurrencyValue(parseFloat(e.target.value))}/>
+                        <span>{activePair.code}</span>
+                    </CurrencyInputWrapper>
+                    <ConvertButton
+                        onClick={() => convertToLocalValue()}
+                        content={
+                            <>
+                                <FontAwesomeIcon icon={faArrowUp}/>
+                                Convert
+                            </>
+                        }
+                    />
+                </InputRow>
+            </>
+        )}
+
     </ConvertFormWrapper>
 }

@@ -1,5 +1,5 @@
-import {ExchangePair} from "../../helpers/parseDailyExchangeData";
 import styled, {css} from "styled-components";
+import {ExchangePair} from "../../api/pairsExchangeData";
 
 const BoxWrapper = styled.div`
   display: flex;

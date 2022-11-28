@@ -1,12 +1,17 @@
 import styled from "styled-components";
 
 const Button = styled.button`
+  display: flex;
+  gap: 1em;
+  justify-content: center;
+  align-items: center;
+  
   padding: 0.5em 1em;
-  border-radius: 8px;
   border: 1px solid ${props => props.theme.primary1};
-  background-color: ${props => props.theme.primary0};
+  background-color: ${props => props.theme.primary4};
+  
   &:hover{
-    background-color: ${props => props.theme.primary2};
+    background-color: ${props => props.theme.primary3};
   }
 `
 
@@ -17,7 +22,7 @@ type Props = {
 
 export default function(props: Props){
     const {content} = props;
-    return <Button onClick={props.onClick}>
+    return <Button {...props} onClick={props.onClick}>
         {content}
     </Button>
 }

@@ -1,7 +1,7 @@
 import {useState} from "react";
 import styled, {css} from "styled-components";
-import {CurrencyPairBox} from "../RateCalculator/CurrencyPairBox";
-import {DailyExchangeData, ExchangePair} from "../../helpers/parseDailyExchangeData";
+import {DailyExchangeData, ExchangePair} from "../../api/pairsExchangeData";
+import {CurrencyPairBox} from "./CurrencyPairBox";
 
 const SideBarWrapper = styled.div`
   position: relative;
@@ -34,7 +34,6 @@ const PairsWrapper = styled.div`
 
 const SearchBar = styled.input`
   padding: 0.5em 0.5em;
-  
   border: 2px solid ${props => props.theme.secondary0}
 `
 
@@ -64,10 +63,10 @@ export const SideBar = (props: Props) => {
         <SideBarWrapper isOpen={isOpen}>
             <nav>
                 <PairsWrapper>
-                    <h3>Avaliable currency pairs</h3>
+                    <h3>Available currencies</h3>
                     <SearchBar
                         type="text"
-                        placeholder={"Search by Country, currency or code"}
+                        placeholder={"Search by country, currency or code"}
                         onChange={(e) => setFilterText(e.target.value)}
                     />
                     {pairs.length === 0 ? (
