@@ -3,9 +3,10 @@ Currency Converter
 
 Basic Info
 ----
-Because of CORS configuration of CNB Api is needed to use some proxy to load data directly from the api.
-We can use external proxies but they can stop working.
-So I decided use simple Express.js server is used for serving frontend scripts and to proxy request to CNB Api.
+Because of the CORS configuration of CNB API is needed to use some proxy to load data directly from the API.
+We can use external proxies, but they can stop working.
+
+So I decided to use a simple Express.js server used for serving frontend scripts and proxy requests to CNB API.
 
 Installation
 ---
@@ -18,12 +19,12 @@ Development
 
 Deploy
 ---
-Not Done - All changes from branch main is automaticly deployed by github actions
+Not Done - All changes from branch main is automatically deployed by github actions
 
 
 Todos
 ----
 - Use some css reset instead tailwind
-- Application is now responsive, but still need some polishing to work better
+- Application is now responsive, but still need some polishing to look better
 - Caching
 - Deployment Script
