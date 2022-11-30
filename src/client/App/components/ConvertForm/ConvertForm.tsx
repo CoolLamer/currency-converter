@@ -81,15 +81,18 @@ export function ConvertForm(props: Props){
     const [ localCurrencyValue, setLocalCurrencyValue ] = useState(1);
     const [ foreignCurrencyValue, setForeignCurrencyValue ] = useState(5);
 
+
     const convertToForeignValue = () => {
-        const foreignValue = divide(localCurrencyValue, activePair.rate);
+        const realRate = divide(activePair.rate, activePair.amount);
+        const foreignValue = divide(localCurrencyValue, realRate);
         setForeignCurrencyValue(
             round(foreignValue, 3)
         )
     };
 
     const convertToLocalValue = () => {
-        const localValue = multiply(foreignCurrencyValue, activePair.rate);
+        const realRate = divide(activePair.rate, activePair.amount);
+        const localValue = multiply(foreignCurrencyValue, realRate);
         setLocalCurrencyValue(
             round(localValue, 3)
         )

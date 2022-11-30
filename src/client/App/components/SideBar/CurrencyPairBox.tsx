@@ -49,7 +49,7 @@ export function CurrencyPairBox(props: Props){
 
         </LabelRow>
         <LabelRow>
-            <div>1 {pairData.code}</div>
+            <div>{pairData.amount} {pairData.code}</div>
             <div>{pairData.rate} CZK</div>
         </LabelRow>
     </BoxWrapper>
